@@ -1,6 +1,6 @@
 # T3 FE QUIZ
 
-- [ ] Make it deploy
+- [x] Make it deploy
 - [ ] Scaffold basic ui
 - [ ] Setup db
 - [ ] attach db to UI

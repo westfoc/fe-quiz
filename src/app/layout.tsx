@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -9,12 +10,43 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const NavBar = () => {
+  // const user = useUser();
+
+  return (
+    <nav className="flex gap-4 border-b border-slate-400 p-4">
+      <div>
+        {/* {!user.isSignedIn ? (
+          <div className="flex justify-center">
+            <SignInButton />{" "}
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <SignOutButton />
+          </div>
+        )} */}
+      </div>
+      <div className="flex justify-center">
+        <Link href="/">Home</Link>
+      </div>
+      {/* {user?.user?.organizationMemberships?.[0]?.role === "admin" ? (
+        <div>
+          <Link href="/create">Create Question</Link>
+        </div>
+      ) : null} */}
+    </nav>
+  );
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <NavBar />
+        {children}
+      </body>
     </html>
   );
 }
