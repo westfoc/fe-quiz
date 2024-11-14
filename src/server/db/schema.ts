@@ -1,10 +1,10 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 import {
-  index,
   integer,
+  pgEnum,
   pgTableCreator,
   timestamp,
   varchar,
@@ -18,19 +18,40 @@ import {
  */
 export const createTable = pgTableCreator((name) => `fe-quiz_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
-    ),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const categoriesEnum = pgEnum("categories", [
+  "js",
+  "html/css",
+  "data_structures",
+  "algorithms",
+  "systems_design",
+]);
+
+export const questions = createTable("question", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  question: varchar("question", { length: 256 }),
+  codeSnippet: varchar("code_snippet", { length: 256 }),
+  correctAnswer: varchar("correct_answer", { length: 256 }),
+  answerExplanation: varchar("answer_explanation", { length: 256 }),
+  category: categoriesEnum("questions").default("js"),
+});
+
+export const answerOptions = createTable("answer_option", {
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  answerOptionId: integer("answer_option_id").references(() => questions.id),
+  A: varchar("A", { length: 256 }),
+  B: varchar("B", { length: 256 }),
+  C: varchar("C", { length: 256 }),
+  D: varchar("D", { length: 256 }),
+});
+
+export const answerOptionsRelations = relations(answerOptions, ({ one }) => ({
+  question: one(questions, {
+    fields: [answerOptions.answerOptionId],
+    references: [questions.id],
+  }),
+}));
