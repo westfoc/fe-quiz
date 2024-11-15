@@ -3,6 +3,7 @@
 import { db } from "./db";
 import { questionList, answerOptions } from "~/server/db/schema";
 import type { Category } from "~/types";
+import { shuffle } from "~/utils";
 
 export async function getQuestions() {
   //   const user = auth();
@@ -15,7 +16,7 @@ export async function getQuestions() {
     },
   });
 
-  return questions;
+  return shuffle(questions);
 }
 
 export async function createQuestion(question: {

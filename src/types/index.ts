@@ -5,13 +5,7 @@ export interface Question {
   codeSnippet: string | null;
   correctAnswer: string | null;
   answerExplanation: string | null;
-  category:
-    | "js"
-    | "html/css"
-    | "data_structures"
-    | "algorithms"
-    | "systems_design"
-    | null;
+  category: string | null;
   answers: {
     A: string | null;
     B: string | null;
