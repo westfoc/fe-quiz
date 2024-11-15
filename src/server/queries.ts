@@ -1,7 +1,6 @@
 "use server";
 
 import { db } from "./db";
-import { QuestionList } from "./db/schema";
 
 export async function getQuestions() {
   //   const user = auth();

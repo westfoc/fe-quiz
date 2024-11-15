@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AnswerOption from "~/app/_components/answer-option";
-import { QuestionProps } from "~/types";
+import type { QuestionProps } from "~/types";
 
 const incrementQuestionIdx = (
   currentQuestionIdx: number,
@@ -47,41 +47,41 @@ export function Question({ data }: QuestionProps) {
           <li>
             <AnswerOption
               answerOption={{
-                A: data[currentQuestionIdx]?.answers.A || "",
+                A: data[currentQuestionIdx]?.answers.A ?? "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer || ""}
+              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
             />
           </li>
           <li>
             <AnswerOption
               answerOption={{
-                B: data[currentQuestionIdx]?.answers.B || "",
+                B: data[currentQuestionIdx]?.answers.B ?? "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer || ""}
+              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
             />
           </li>
           <li>
             <AnswerOption
               answerOption={{
-                C: data[currentQuestionIdx]?.answers.C || "",
+                C: data[currentQuestionIdx]?.answers.C ?? "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer || ""}
+              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
             />
           </li>
           <li>
             <AnswerOption
               answerOption={{
-                D: data[currentQuestionIdx]?.answers.D || "",
+                D: data[currentQuestionIdx]?.answers.D ?? "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer || ""}
+              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
             />
           </li>
         </ul>
@@ -93,9 +93,9 @@ export function Question({ data }: QuestionProps) {
           ) : (
             <p>
               {`Incorrect: The correct answer is ${
-                data[currentQuestionIdx]?.correctAnswer || ""
+                data[currentQuestionIdx]?.correctAnswer ?? ""
               }.
-                    ${data[currentQuestionIdx]?.answerExplanation || ""}`}
+                    ${data[currentQuestionIdx]?.answerExplanation ?? ""}`}
             </p>
           )}
           {currentQuestionIdx === data.length - 1 ? null : (

@@ -1,5 +1,7 @@
+type AnswerType = Record<string, string>;
+
 export default function AnswerOption(props: {
-  answerOption: { [key: string]: string };
+  answerOption: AnswerType;
   handleOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   selectedAnswer: string;
   correctAnswer: string;

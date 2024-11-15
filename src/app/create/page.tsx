@@ -1,8 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
 import type { SyntheticEvent } from "react";
-import type { NextPage } from "next";
-import PageLayout from "~/app/layout";
 
 import ContentEditable from "react-contenteditable";
 import sanitizeHtml from "sanitize-html";
