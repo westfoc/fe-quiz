@@ -29,7 +29,6 @@ export function Question({ data }: QuestionProps) {
     incrementQuestionIdx(currentQuestionIdx, setCurrentQuestionIdx);
   };
 
-  // const { data } = api.questions.getAll.useQuery();
   // if (isLoading)
   //   return (
   //     <div className="flex grow">
@@ -46,6 +45,7 @@ export function Question({ data }: QuestionProps) {
           {data?.[currentQuestionIdx]?.questionString}
         </h2>
         <ul className="divide-slate-100">
+          {}
           <li>
             <AnswerOption
               answerOption={{
