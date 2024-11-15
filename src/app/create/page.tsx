@@ -1,11 +1,14 @@
 "use client";
+
+import { createQuestion } from "~/server/queries";
 import { useCallback, useState } from "react";
 import type { SyntheticEvent } from "react";
-
+import { Category } from "~/types";
 import ContentEditable from "react-contenteditable";
 import sanitizeHtml from "sanitize-html";
 
-const JAVASCRIPT = "javascript";
+import AnswerInput from "~/app/_components/answer-input";
+
 const DEFAULT_QUESTION = "Add your question here.";
 const DEFAULT_VALUE_A = "Add answer choice A here.";
 const DEFAULT_VALUE_B = "Add answer choice B here.";
@@ -13,50 +16,6 @@ const DEFAULT_VALUE_C = "Add answer choice C here.";
 const DEFAULT_VALUE_D = "Add answer choice D here.";
 const DEFAULT_CORRECT_ANSWER = "Add the correct answer here.";
 const DEFAULT_ANSWER_EXPLANATION = "Add answer explanation here";
-
-enum Category {
-  JAVASCRIPT = "Javascript",
-  CSS = "css",
-  HTML = "html",
-  ALGORITHMS = "algorithms",
-  DATA_STRUCTURES = "data_structures",
-  SYSTEM_DESIGN = "system_design",
-}
-
-const AnswerInput = (props: {
-  questionLetter: string;
-  value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  const { questionLetter, value, onChange } = props;
-  const onContentBlur = useCallback(
-    (e: SyntheticEvent) => {
-      const sanitizeConf = {
-        allowedTags: ["b", "i", "a", "p"],
-        allowedAttributes: { a: ["href"] },
-      };
-
-      onChange(sanitizeHtml(e.currentTarget.innerHTML, sanitizeConf));
-    },
-    [onChange],
-  );
-  return (
-    <div className="mb-4 flex w-full space-x-6 rounded-lg border bg-white p-5 text-left">
-      <div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-black bg-white">
-          <p className="font-bold text-black">{questionLetter}</p>
-        </div>
-      </div>
-      <ContentEditable
-        className="text-xl text-black focus-visible:outline-none"
-        onChange={(e) => onContentBlur(e)}
-        id={`${questionLetter}`}
-        onBlur={onContentBlur}
-        html={value}
-      />
-    </div>
-  );
-};
 
 export default function CreateQuestionPage() {
   const [question, setQuestion] = useState(DEFAULT_QUESTION);
@@ -68,29 +27,31 @@ export default function CreateQuestionPage() {
   const [answerExplanation, setAnswerExplanation] = useState(
     DEFAULT_ANSWER_EXPLANATION,
   );
-  const [category, setCategory] = useState(JAVASCRIPT);
+  const [category, setCategory] = useState(Category.JAVASCRIPT);
 
-  //   const { mutate, isLoading: isCreating } = api.questions.create.useMutation({
-  //     onSuccess: () => {
-  //       setQuestion(DEFAULT_QUESTION);
-  //       setValueA(DEFAULT_VALUE_A);
-  //       setValueB(DEFAULT_VALUE_B);
-  //       setValueC(DEFAULT_VALUE_C);
-  //       setValueD(DEFAULT_VALUE_D);
-  //       setCorrectAnswer(DEFAULT_CORRECT_ANSWER);
-  //       setAnswerExplanation(DEFAULT_ANSWER_EXPLANATION);
-  //     },
-
-  //     onError: (e) => {
-  //       const errorMessage = e.data?.zodError?.fieldErrors;
-
-  //       if (errorMessage && errorMessage[0]) {
-  //         console.log(errorMessage[0]);
-  //       } else {
-  //         console.log("Failed to post! Please try again later.");
-  //       }
-  //     },
-  //   });
+  async function handleOnClickSubmit() {
+    const q = {
+      question,
+      answers: {
+        A: valueA,
+        B: valueB,
+        C: valueC,
+        D: valueD,
+      },
+      correctAnswer,
+      answerExplanation,
+      category,
+      codeSnippet: "",
+    };
+    await createQuestion(q);
+    setQuestion(DEFAULT_QUESTION);
+    setValueA(DEFAULT_VALUE_A);
+    setValueB(DEFAULT_VALUE_B);
+    setValueC(DEFAULT_VALUE_C);
+    setValueD(DEFAULT_VALUE_D);
+    setCorrectAnswer(DEFAULT_CORRECT_ANSWER);
+    setAnswerExplanation(DEFAULT_ANSWER_EXPLANATION);
+  }
 
   const onQuestionBlur = useCallback((e: SyntheticEvent) => {
     const sanitizeConf = {
@@ -118,22 +79,6 @@ export default function CreateQuestionPage() {
 
     setAnswerExplanation(sanitizeHtml(e.currentTarget.innerHTML, sanitizeConf));
   }, []);
-
-  const handleOnClickSubmit = () => {
-    // mutate({
-    //   question,
-    //   answerOptions: {
-    //     A: valueA,
-    //     B: valueB,
-    //     C: valueC,
-    //     D: valueD,
-    //   },
-    //   correctAnswer,
-    //   answerExplanation,
-    //   category,
-    //   codeSnippet: "",
-    // });
-  };
 
   return (
     <div className="flex w-full flex-col p-4">
@@ -178,8 +123,9 @@ export default function CreateQuestionPage() {
               id="category"
             >
               <option value={Category.JAVASCRIPT}>{Category.JAVASCRIPT}</option>
-              <option value={Category.HTML}>{Category.HTML}</option>
-              <option value={Category.CSS}>{Category.CSS}</option>
+              <option value={Category["HTML/CSS"]}>
+                {Category["HTML/CSS"]}
+              </option>
               <option value={Category.DATA_STRUCTURES}>
                 {Category.DATA_STRUCTURES}
               </option>

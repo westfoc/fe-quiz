@@ -1,6 +1,5 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
-
 import { sql, relations, type InferSelectModel } from "drizzle-orm";
 import {
   integer,
@@ -18,13 +17,24 @@ import {
  */
 export const createTable = pgTableCreator((name) => `fe-quiz_${name}`);
 
-export const categoriesEnum = pgEnum("categories", [
-  "js",
-  "html/css",
-  "data_structures",
-  "algorithms",
-  "systems_design",
-]);
+export enum Category {
+  JAVASCRIPT = "js",
+  "HTML/CSS" = "html/css",
+  ALGORITHMS = "algorithms",
+  DATA_STRUCTURES = "data_structures",
+  SYSTEM_DESIGN = "system_design",
+}
+
+export function enumToPgEnum<T extends Record<string, string>>(
+  myEnum: T,
+): [string, ...string[]] {
+  return Object.values(myEnum).map((value: string) => `${value}`) as [
+    string,
+    ...string[],
+  ];
+}
+
+export const categoriesEnum = pgEnum("categories", enumToPgEnum(Category));
 
 export const questionList = createTable("question_list", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
@@ -35,7 +45,7 @@ export const questionList = createTable("question_list", {
   codeSnippet: varchar("code_snippet", { length: 256 }),
   correctAnswer: varchar("correct_answer", { length: 256 }),
   answerExplanation: varchar("answer_explanation", { length: 256 }),
-  category: categoriesEnum("questions").default("js"),
+  category: categoriesEnum("questions").default(Category.JAVASCRIPT),
 });
 
 export const answerOptions = createTable("answer_options", {
