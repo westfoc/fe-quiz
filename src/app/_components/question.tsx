@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import LoadingPage from "~/app/loading";
-import { getQuestions } from "~/server/queries";
+"use client";
+import { useState } from "react";
 
 const AnswerOption = (props: {
   answerOption: { [key: string]: string };
@@ -48,13 +47,6 @@ const AnswerOption = (props: {
   );
 };
 
-interface QuestionProps {
-  currentQuestionIdx: number;
-  selectedAnswer: string;
-  handleSelectAnswer: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleOnClickNext: () => void;
-}
-
 interface Question {
   id: number;
   createdAt: Date;
@@ -77,25 +69,33 @@ interface Question {
   };
 }
 
-export function Question({
-  currentQuestionIdx,
-  selectedAnswer,
-  handleSelectAnswer,
-  handleOnClickNext,
-}: QuestionProps) {
-  const [data, setData] = useState<Question[] | []>([]);
-  useEffect(() => {
-    async function getQ() {
-      const data: Question[] = await getQuestions();
-      if (data) {
-        setData(data);
-      }
+interface QuestionProps {
+  data: Question[];
+}
+
+const incrementQuestionIdx = (
+  currentQuestionIdx: number,
+  setCurrentQuestionIdx: React.Dispatch<React.SetStateAction<number>>,
+) => setCurrentQuestionIdx(currentQuestionIdx + 1);
+
+export function Question({ data }: QuestionProps) {
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
+
+  const handleSelectAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!e.currentTarget) {
+      return;
     }
+    if (!selectedAnswer) {
+      setSelectedAnswer(e.currentTarget.id);
+    }
+  };
 
-    getQ();
-  }, []);
+  const handleOnClickNext = () => {
+    setSelectedAnswer("");
+    incrementQuestionIdx(currentQuestionIdx, setCurrentQuestionIdx);
+  };
 
-  console.log(data);
   // const { data } = api.questions.getAll.useQuery();
   // if (isLoading)
   //   return (
