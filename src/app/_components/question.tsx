@@ -4,6 +4,8 @@ import { useState } from "react";
 import AnswerOption from "~/app/_components/answer-option";
 import type { QuestionProps } from "~/types";
 
+export const dynamic = "force-dynamic";
+
 const incrementQuestionIdx = (
   currentQuestionIdx: number,
   setCurrentQuestionIdx: React.Dispatch<React.SetStateAction<number>>,
