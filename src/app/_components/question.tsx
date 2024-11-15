@@ -45,47 +45,23 @@ export function Question({ data }: QuestionProps) {
           {data?.[currentQuestionIdx]?.questionString}
         </h2>
         <ul className="divide-slate-100">
-          {}
-          <li>
-            <AnswerOption
-              answerOption={{
-                A: data[currentQuestionIdx]?.answers.A ?? "",
-              }}
-              selectedAnswer={selectedAnswer}
-              handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
-            />
-          </li>
-          <li>
-            <AnswerOption
-              answerOption={{
-                B: data[currentQuestionIdx]?.answers.B ?? "",
-              }}
-              selectedAnswer={selectedAnswer}
-              handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
-            />
-          </li>
-          <li>
-            <AnswerOption
-              answerOption={{
-                C: data[currentQuestionIdx]?.answers.C ?? "",
-              }}
-              selectedAnswer={selectedAnswer}
-              handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
-            />
-          </li>
-          <li>
-            <AnswerOption
-              answerOption={{
-                D: data[currentQuestionIdx]?.answers.D ?? "",
-              }}
-              selectedAnswer={selectedAnswer}
-              handleOnClick={handleSelectAnswer}
-              correctAnswer={data?.[currentQuestionIdx]?.correctAnswer ?? ""}
-            />
-          </li>
+          {Object.keys(data?.[currentQuestionIdx]?.answers ?? {})
+            .filter((item) => /^[a-z]/i.exec(item) && item.length === 1)
+            .map((item) => (
+              <li key={String(data?.[currentQuestionIdx]?.answers?.[item])}>
+                <AnswerOption
+                  answerOption={{
+                    [item]:
+                      String(data[currentQuestionIdx]?.answers?.[item]) ?? "",
+                  }}
+                  selectedAnswer={selectedAnswer}
+                  handleOnClick={handleSelectAnswer}
+                  correctAnswer={
+                    data?.[currentQuestionIdx]?.correctAnswer ?? ""
+                  }
+                />
+              </li>
+            ))}
         </ul>
       </div>
       {selectedAnswer ? (

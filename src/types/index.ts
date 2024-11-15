@@ -1,17 +1,12 @@
 export interface Question {
-  id: number;
+  id: number | string;
   createdAt: Date;
   questionString: string | null;
   codeSnippet: string | null;
   correctAnswer: string | null;
   answerExplanation: string | null;
   category: string | null;
-  answers: {
-    A: string | null;
-    B: string | null;
-    C: string | null;
-    D: string | null;
-  };
+  answers: Record<string, string | number | Date | null>;
 }
 
 export interface QuestionProps {
