@@ -1,6 +1,7 @@
+"use client";
 import { useCallback, useState } from "react";
 import type { SyntheticEvent } from "react";
-import type { NextPage } from "next";
+// import type { NextPage } from "next";
 import PageLayout from "~/app/layout";
 
 import ContentEditable from "react-contenteditable";
@@ -59,7 +60,7 @@ const AnswerInput = (props: {
   );
 };
 
-const CreateQuestionPage: NextPage = () => {
+export default function CreateQuestionPage() {
   const [question, setQuestion] = useState(DEFAULT_QUESTION);
   const [valueA, setValueA] = useState(DEFAULT_VALUE_A);
   const [valueB, setValueB] = useState(DEFAULT_VALUE_B);
@@ -222,4 +223,4 @@ const CreateQuestionPage: NextPage = () => {
       </div>
     </PageLayout>
   );
-};
+}
