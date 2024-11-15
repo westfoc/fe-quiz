@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useState } from "react";
 import type { SyntheticEvent } from "react";
-// import type { NextPage } from "next";
+import type { NextPage } from "next";
 import PageLayout from "~/app/layout";
 
 import ContentEditable from "react-contenteditable";
@@ -138,89 +138,67 @@ export default function CreateQuestionPage() {
   };
 
   return (
-    <PageLayout>
-      <div className="flex w-full flex-col p-4">
-        <div className="h-full w-full flex-col gap-2">
-          <ContentEditable
-            className="w-86 mb-7 text-xl focus-visible:outline-none"
-            onChange={(e) => onQuestionBlur(e)}
-            onBlur={onQuestionBlur}
-            html={question}
-          />
-          <div className="w-full">
-            <AnswerInput
-              questionLetter="A"
-              value={valueA}
-              onChange={setValueA}
+    <div className="flex w-full flex-col p-4">
+      <div className="h-full w-full flex-col gap-2">
+        <ContentEditable
+          className="w-86 mb-7 text-xl focus-visible:outline-none"
+          onChange={(e) => onQuestionBlur(e)}
+          onBlur={onQuestionBlur}
+          html={question}
+        />
+        <div className="w-full">
+          <AnswerInput questionLetter="A" value={valueA} onChange={setValueA} />
+          <AnswerInput questionLetter="B" value={valueB} onChange={setValueB} />
+          <AnswerInput questionLetter="C" value={valueC} onChange={setValueC} />
+          <AnswerInput questionLetter="D" value={valueD} onChange={setValueD} />
+          <div>
+            <ContentEditable
+              className="w-86 mb-7 text-xl focus-visible:outline-none"
+              onChange={(e) => correctAnswerBlur(e)}
+              onBlur={correctAnswerBlur}
+              html={correctAnswer}
             />
-            <AnswerInput
-              questionLetter="B"
-              value={valueB}
-              onChange={setValueB}
-            />
-            <AnswerInput
-              questionLetter="C"
-              value={valueC}
-              onChange={setValueC}
-            />
-            <AnswerInput
-              questionLetter="D"
-              value={valueD}
-              onChange={setValueD}
-            />
-            <div>
-              <ContentEditable
-                className="w-86 mb-7 text-xl focus-visible:outline-none"
-                onChange={(e) => correctAnswerBlur(e)}
-                onBlur={correctAnswerBlur}
-                html={correctAnswer}
-              />
-            </div>
-            <div>
-              <ContentEditable
-                className="w-86 mb-7 text-xl focus-visible:outline-none"
-                onChange={(e) => answerExplanationBlur(e)}
-                onBlur={answerExplanationBlur}
-                html={answerExplanation}
-              />
-            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="category">Choose a category</label>
-            <div>
-              <select
-                value={category}
-                onChange={(e) =>
-                  setCategory(Category[e.target.value as keyof typeof Category])
-                }
-                className="text-black"
-                id="category"
-              >
-                <option value={Category.JAVASCRIPT}>
-                  {Category.JAVASCRIPT}
-                </option>
-                <option value={Category.HTML}>{Category.HTML}</option>
-                <option value={Category.CSS}>{Category.CSS}</option>
-                <option value={Category.DATA_STRUCTURES}>
-                  {Category.DATA_STRUCTURES}
-                </option>
-                <option value={Category.ALGORITHMS}>
-                  {Category.ALGORITHMS}
-                </option>
-                <option value={Category.SYSTEM_DESIGN}>
-                  {Category.SYSTEM_DESIGN}
-                </option>
-              </select>
-            </div>
+          <div>
+            <ContentEditable
+              className="w-86 mb-7 text-xl focus-visible:outline-none"
+              onChange={(e) => answerExplanationBlur(e)}
+              onBlur={answerExplanationBlur}
+              html={answerExplanation}
+            />
           </div>
-          <button
-            className="disabled:blue-gray-700 flex rounded-lg bg-blue-600 px-6 py-4"
-            onClick={handleOnClickSubmit}
-          >
-            Create
-          </button>
         </div>
+        <div className="mb-4">
+          <label htmlFor="category">Choose a category</label>
+          <div>
+            <select
+              value={category}
+              onChange={(e) =>
+                setCategory(Category[e.target.value as keyof typeof Category])
+              }
+              className="text-black"
+              id="category"
+            >
+              <option value={Category.JAVASCRIPT}>{Category.JAVASCRIPT}</option>
+              <option value={Category.HTML}>{Category.HTML}</option>
+              <option value={Category.CSS}>{Category.CSS}</option>
+              <option value={Category.DATA_STRUCTURES}>
+                {Category.DATA_STRUCTURES}
+              </option>
+              <option value={Category.ALGORITHMS}>{Category.ALGORITHMS}</option>
+              <option value={Category.SYSTEM_DESIGN}>
+                {Category.SYSTEM_DESIGN}
+              </option>
+            </select>
+          </div>
+        </div>
+        <button
+          className="disabled:blue-gray-700 flex rounded-lg bg-blue-600 px-6 py-4"
+          onClick={handleOnClickSubmit}
+        >
+          Create
+        </button>
       </div>
-    </PageLayout>
+    </div>
   );
 }
