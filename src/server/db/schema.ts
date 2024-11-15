@@ -1,7 +1,12 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql, relations } from "drizzle-orm";
+import {
+  sql,
+  relations,
+  type InferSelectModel,
+  type InferInsertModel,
+} from "drizzle-orm";
 import {
   integer,
   pgEnum,
@@ -26,32 +31,35 @@ export const categoriesEnum = pgEnum("categories", [
   "systems_design",
 ]);
 
-export const questions = createTable("question", {
+export const questionList = createTable("question_list", {
   id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  question: varchar("question", { length: 256 }),
+  questionString: varchar("question", { length: 256 }),
   codeSnippet: varchar("code_snippet", { length: 256 }),
   correctAnswer: varchar("correct_answer", { length: 256 }),
   answerExplanation: varchar("answer_explanation", { length: 256 }),
   category: categoriesEnum("questions").default("js"),
 });
 
-export const answerOptions = createTable("answer_option", {
+export const answerOptions = createTable("answer_options", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  answerOptionId: integer("answer_option_id").references(() => questions.id),
+  answerOptionId: integer("answer_option_id").references(() => questionList.id),
   A: varchar("A", { length: 256 }),
   B: varchar("B", { length: 256 }),
   C: varchar("C", { length: 256 }),
   D: varchar("D", { length: 256 }),
 });
 
-export const answerOptionsRelations = relations(answerOptions, ({ one }) => ({
-  question: one(questions, {
-    fields: [answerOptions.answerOptionId],
-    references: [questions.id],
+export const questionsRelations = relations(questionList, ({ one }) => ({
+  answers: one(answerOptions, {
+    fields: [questionList.id],
+    references: [answerOptions.answerOptionId],
   }),
 }));
+
+export type QuestionList = InferSelectModel<typeof questionList>;

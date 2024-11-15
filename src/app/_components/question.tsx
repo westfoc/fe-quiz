@@ -1,10 +1,6 @@
-"use client";
-import { useState } from "react";
-import { type NextPage } from "next";
-
-// import { api } from "~/utils/api";
+import { useEffect, useState } from "react";
 import LoadingPage from "~/app/loading";
-import PageLayout from "~/app/layout";
+import { getQuestions } from "~/server/queries";
 
 const AnswerOption = (props: {
   answerOption: { [key: string]: string };
@@ -52,51 +48,61 @@ const AnswerOption = (props: {
   );
 };
 
-const incrementQuestionIdx = (
-  currentQuestionIdx: number,
-  setCurrentQuestionIdx: React.Dispatch<React.SetStateAction<number>>,
-) => setCurrentQuestionIdx(currentQuestionIdx + 1);
+interface QuestionProps {
+  currentQuestionIdx: number;
+  selectedAnswer: string;
+  handleSelectAnswer: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleOnClickNext: () => void;
+}
 
-const Question = () => {
-  const isLoading = false;
-  //   const { data } = api.questions.getAll.useQuery();
-  const data = [
-    {
-      id: 1,
-      question: "What' your question",
-      answerOptions: {
-        A: "Answer A",
-        B: "Answer B",
-        C: "Answer C",
-        D: "Answer D",
-      },
-      correctAnswer: "This is the answer",
-      answerExplanation: "Here's the explanation",
-    },
-  ];
-  const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
-
-  const handleSelectAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!e.currentTarget) {
-      return;
-    }
-    if (!selectedAnswer) {
-      setSelectedAnswer(e.currentTarget.id);
-    }
+interface Question {
+  id: number;
+  createdAt: Date;
+  questionString: string | null;
+  codeSnippet: string | null;
+  correctAnswer: string | null;
+  answerExplanation: string | null;
+  category:
+    | "js"
+    | "html/css"
+    | "data_structures"
+    | "algorithms"
+    | "systems_design"
+    | null;
+  answers: {
+    A: string | null;
+    B: string | null;
+    C: string | null;
+    D: string | null;
   };
+}
 
-  const handleOnClickNext = () => {
-    setSelectedAnswer("");
-    incrementQuestionIdx(currentQuestionIdx, setCurrentQuestionIdx);
-  };
+export function Question({
+  currentQuestionIdx,
+  selectedAnswer,
+  handleSelectAnswer,
+  handleOnClickNext,
+}: QuestionProps) {
+  const [data, setData] = useState<Question[] | []>([]);
+  useEffect(() => {
+    async function getQ() {
+      const data: Question[] = await getQuestions();
+      if (data) {
+        setData(data);
+      }
+    }
 
-  if (isLoading)
-    return (
-      <div className="flex grow">
-        <LoadingPage />{" "}
-      </div>
-    );
+    getQ();
+  }, []);
+
+  console.log(data);
+  // const { data } = api.questions.getAll.useQuery();
+  // if (isLoading)
+  //   return (
+  //     <div className="flex grow">
+  //       <LoadingPage />{" "}
+  //     </div>
+  //   );
 
   if (!data) return <div>Something went wrong</div>;
 
@@ -104,13 +110,13 @@ const Question = () => {
     <>
       <div key={data?.[currentQuestionIdx]?.id}>
         <h2 className="text-l pb-8 pt-8">
-          {data?.[currentQuestionIdx]?.question}
+          {data?.[currentQuestionIdx]?.questionString}
         </h2>
         <ul className="divide-slate-100">
           <li>
             <AnswerOption
               answerOption={{
-                A: data[currentQuestionIdx]?.answerOptions.A || "",
+                A: data[currentQuestionIdx]?.answers.A || "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
@@ -120,7 +126,7 @@ const Question = () => {
           <li>
             <AnswerOption
               answerOption={{
-                B: data[currentQuestionIdx]?.answerOptions.B || "",
+                B: data[currentQuestionIdx]?.answers.B || "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
@@ -130,7 +136,7 @@ const Question = () => {
           <li>
             <AnswerOption
               answerOption={{
-                C: data[currentQuestionIdx]?.answerOptions.C || "",
+                C: data[currentQuestionIdx]?.answers.C || "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
@@ -140,7 +146,7 @@ const Question = () => {
           <li>
             <AnswerOption
               answerOption={{
-                D: data[currentQuestionIdx]?.answerOptions.D || "",
+                D: data[currentQuestionIdx]?.answers.D || "",
               }}
               selectedAnswer={selectedAnswer}
               handleOnClick={handleSelectAnswer}
@@ -176,16 +182,4 @@ const Question = () => {
       ) : null}
     </>
   );
-};
-
-const Home: NextPage = () => {
-  return (
-    <PageLayout>
-      <div className="flex flex-col p-4">
-        <Question />
-      </div>
-    </PageLayout>
-  );
-};
-
-export default Home;
+}

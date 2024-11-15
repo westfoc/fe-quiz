@@ -29,6 +29,9 @@ const NavBar = () => {
       <div className="flex justify-center">
         <Link href="/">Home</Link>
       </div>
+      <div>
+        <Link href="/create">Create Question</Link>
+      </div>
       {/* {user?.user?.organizationMemberships?.[0]?.role === "admin" ? (
         <div>
           <Link href="/create">Create Question</Link>
