@@ -3,8 +3,14 @@
   <img src="https://img.shields.io/badge/npm-v9.0.0-blue.svg?style=flat-square" alt="npm" />
 </div>
 
+<div align="center">
+    <img src="doc/homepage.webp" alt="Project logo"/>
+</div>
+
+
+
 # Welcome to Frontend Quiz
-This is a multiple choice quiz generator to help you study computer science topics by helping you create multiple choice questions and then test your knowledge by solving your questions in your question bank.
+This is a multiple-choice quiz generator to help you study computer science topics. You can create multiple-choice questions and test your knowledge by solving questions in your question bank.
 
 ## The Stack 🧰
 

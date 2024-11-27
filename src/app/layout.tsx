@@ -1,9 +1,12 @@
-"use client";
-
 import "~/styles/globals.css";
-
+import { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "FE Quiz",
+  description: "Quiz generator for studying CS triva",
+};
 
 const NavBar = () => {
   // const user = useUser();
@@ -41,6 +44,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
+      <head>
+        <title>FE Quiz</title>
+      </head>
       <body>
         <NavBar />
         {children}
