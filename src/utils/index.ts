@@ -67,27 +67,6 @@ export function transformAnswers(data: Question[], currentQuestionIdx: number) {
   );
 }
 
-export function colorSelectedAnswer(
-  answerLetter: string,
-  selectedAnswerLetter: string,
-  correctAnswerLetter: string,
-) {
-  if (
-    answerLetter === selectedAnswerLetter &&
-    selectedAnswerLetter === correctAnswerLetter
-  ) {
-    return "bg-green-400 border-green-500 hover:bg-green-400";
-  }
-  if (
-    answerLetter === selectedAnswerLetter &&
-    selectedAnswerLetter !== correctAnswerLetter
-  ) {
-    return "bg-red-400 border-red-600 hover:bg-red-400";
-  }
-
-  return "bg-white hover:bg-slate-300";
-}
-
 export const incrementQuestionIdx = (
   currentQuestionIdx: number,
   setCurrentQuestionIdx: React.Dispatch<React.SetStateAction<number>>,

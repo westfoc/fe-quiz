@@ -1,5 +1,4 @@
 import type { AnswerType } from "~/types";
-import { colorSelectedAnswer } from "~/utils";
 
 interface AnswerOptionProps {
   answerOption: AnswerType;
@@ -14,6 +13,26 @@ export default function AnswerOption({
   selectedAnswer,
   correctAnswer,
 }: AnswerOptionProps) {
+  function colorSelectedAnswer(
+    answerLetter: string,
+    selectedAnswerLetter: string,
+    correctAnswerLetter: string,
+  ) {
+    if (
+      answerLetter === selectedAnswerLetter &&
+      selectedAnswerLetter === correctAnswerLetter
+    ) {
+      return "bg-green-400 border-green-500 hover:bg-green-400";
+    }
+    if (
+      answerLetter === selectedAnswerLetter &&
+      selectedAnswerLetter !== correctAnswerLetter
+    ) {
+      return "bg-red-400 border-red-600 hover:bg-red-400";
+    }
+
+    return "bg-white hover:bg-slate-300";
+  }
   return (
     <>
       {Object.entries(answerOption).map(
