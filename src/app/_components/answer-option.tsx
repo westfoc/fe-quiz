@@ -16,25 +16,30 @@ export default function AnswerOption({
 }: AnswerOptionProps) {
   return (
     <>
-      {Object.entries(answerOption).map(([k, v]) => (
-        <button
-          key={k}
-          id={k}
-          onClick={handleOnClick}
-          className={`mb-4 flex w-full space-x-6 rounded-lg border ${colorSelectedAnswer(
-            k,
+      {Object.entries(answerOption).map(
+        ([answerOptionLetter, answerOptionValue]) => {
+          const colorAnswer = colorSelectedAnswer(
+            answerOptionLetter,
             selectedAnswer,
             correctAnswer,
-          )} p-5 text-left`}
-        >
-          <div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-black bg-white">
-              <p className="font-bold text-black">{k}</p>
-            </div>
-          </div>
-          <p className="text-black">{v}</p>
-        </button>
-      ))}
+          );
+          return (
+            <button
+              key={answerOptionLetter}
+              id={answerOptionLetter}
+              onClick={handleOnClick}
+              className={`${colorAnswer} mb-4 flex w-full space-x-6 rounded-lg border p-5 text-left`}
+            >
+              <div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-black bg-white">
+                  <p className="font-bold text-black">{answerOptionLetter}</p>
+                </div>
+              </div>
+              <p className="text-black">{answerOptionValue}</p>
+            </button>
+          );
+        },
+      )}
     </>
   );
 }

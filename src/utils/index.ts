@@ -68,14 +68,20 @@ export function transformAnswers(data: Question[], currentQuestionIdx: number) {
 }
 
 export function colorSelectedAnswer(
-  answer: string,
-  selectedAnswer: string,
-  correctAnswer: string,
+  answerLetter: string,
+  selectedAnswerLetter: string,
+  correctAnswerLetter: string,
 ) {
-  if (answer === selectedAnswer && selectedAnswer === correctAnswer) {
+  if (
+    answerLetter === selectedAnswerLetter &&
+    selectedAnswerLetter === correctAnswerLetter
+  ) {
     return "bg-green-400 border-green-500 hover:bg-green-400";
   }
-  if (answer === selectedAnswer && selectedAnswer !== correctAnswer) {
+  if (
+    answerLetter === selectedAnswerLetter &&
+    selectedAnswerLetter !== correctAnswerLetter
+  ) {
     return "bg-red-400 border-red-600 hover:bg-red-400";
   }
 
