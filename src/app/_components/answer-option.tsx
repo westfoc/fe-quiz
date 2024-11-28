@@ -1,26 +1,19 @@
-type AnswerType = Record<string, string>;
+import type { AnswerType } from "~/types";
+import { colorSelectedAnswer } from "~/utils";
 
-export default function AnswerOption(props: {
+interface AnswerOptionProps {
   answerOption: AnswerType;
   handleOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   selectedAnswer: string;
   correctAnswer: string;
-}) {
-  const colorSelectedAnswer = (
-    answer: string,
-    selectedAnswer: string,
-    correctAnswer: string,
-  ) => {
-    if (answer === selectedAnswer && selectedAnswer === correctAnswer) {
-      return "bg-green-400 border-green-500 hover:bg-green-400";
-    }
-    if (answer === selectedAnswer && selectedAnswer !== correctAnswer) {
-      return "bg-red-400 border-red-600 hover:bg-red-400";
-    }
+}
 
-    return "bg-white hover:bg-slate-300";
-  };
-  const { answerOption, handleOnClick, selectedAnswer, correctAnswer } = props;
+export default function AnswerOption({
+  answerOption,
+  handleOnClick,
+  selectedAnswer,
+  correctAnswer,
+}: AnswerOptionProps) {
   return (
     <>
       {Object.entries(answerOption).map(([k, v]) => (

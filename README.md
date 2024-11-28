@@ -35,3 +35,8 @@ All commands are run from the root of the project, from a terminal.
 <div align="center">
     <img src="doc/lighthouse_scores.webp" alt="Lighthouse Scores"/>
 </div>
+
+
+## TODO
+- [x] Resize quiz window
+- [x] Add sort by question type buttons
